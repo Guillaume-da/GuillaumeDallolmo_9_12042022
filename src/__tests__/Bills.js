@@ -2,21 +2,21 @@
  * @jest-environment jsdom
  */
 
-import {screen, waitFor} from "@testing-library/dom"
+import {screen, waitFor, fireEvent} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import Bills from "../containers/Bills.js";
 import mockStore from "../__mocks__/store"
-import {fireEvent} from "@testing-library/dom"
+
+// import userEvent from "@testing-library/user-event";
 
 import router from "../app/Router.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout should be highlighted", async () => {
-
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee'
@@ -40,6 +40,33 @@ describe("Given I am connected as an employee", () => {
     })
   })
 })
+
+describe("When i click on new bill button", () => {
+  test("Then It should renders new bill page", async() => {
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    window.localStorage.setItem('user', JSON.stringify({
+      type: 'Employee'
+    }))
+    const root = document.createElement("div")
+    root.setAttribute("id", "root")
+    document.body.append(root)
+    router()
+    window.onNavigate(ROUTES_PATH.Bills)
+    const store = null
+    const bill = new Bills({document, onNavigate, store, localStorage: window.localStorage})
+
+    await waitFor(() => screen.getAllByTestId('btn-new-bill'))
+    const newBillButton = screen.getByTestId('btn-new-bill')
+    
+    const handleClickNewBill = jest.fn(bill.handleClickNewBill)
+    newBillButton.addEventListener('click', handleClickNewBill)
+    fireEvent.click(newBillButton)
+
+    expect(handleClickNewBill).toHaveBeenCalled()
+    expect(screen.getByText("Envoyer une note de frais")).toBeTruthy()
+  })
+})
+
 
 // test d'intégration GET
 describe("Given I am a user connected as an Employee", () => {
@@ -129,7 +156,6 @@ describe("Given I am a user connected as an Employee", () => {
 
 describe('Given I am employee', ()=>{
   describe('When I navigate to Bill page', ()=>{
-
    test('When I click on eye icon, a modal should open', async()=>{
     Object.defineProperty(window, 'localStorage', {value: localStorageMock})
     window.localStorage.setItem('user', JSON.stringify({type:'Employee'}))
@@ -151,3 +177,36 @@ describe('Given I am employee', ()=>{
    })
   })
 })
+
+describe("When i click on a eye icon", () => { 
+  test('Then the handleClickIconEye function should be called', async () => {
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    window.localStorage.setItem('user', JSON.stringify({
+      type: 'Employee'
+    }))
+    const root = document.createElement("div")
+    root.setAttribute("id", "root")
+    document.body.append(root)
+    router()
+    window.onNavigate(ROUTES_PATH.Bills)
+    const store = null
+    const bill = new Bills({
+      document, 
+      onNavigate, 
+      store, 
+      localStorage: window.localStorage
+    })
+    
+    await waitFor(() => screen.getAllByTestId('icon-eye')[0])
+    const eye = screen.getAllByTestId('icon-eye')[0]
+    $.fn.modal = jest.fn()
+    
+    const handleClickIconEye = jest.fn(bill.handleClickIconEye(eye))
+    eye.addEventListener('click', handleClickIconEye)
+    fireEvent.click(eye)
+
+    expect(handleClickIconEye).toHaveBeenCalled()
+    expect($.fn.modal).toHaveBeenCalled()
+  })
+})
+
