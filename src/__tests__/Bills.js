@@ -9,6 +9,7 @@ import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import Bills from "../containers/Bills.js";
 import mockStore from "../__mocks__/store"
+import {fireEvent} from "@testing-library/dom"
 
 import router from "../app/Router.js";
 
@@ -123,5 +124,30 @@ describe("Given I am a user connected as an Employee", () => {
       expect(message).toBeTruthy()
     })
   })
+  })
+})
+
+describe('Given I am employee', ()=>{
+  describe('When I navigate to Bill page', ()=>{
+
+   test('When I click on eye icon, a modal should open', async()=>{
+    Object.defineProperty(window, 'localStorage', {value: localStorageMock})
+    window.localStorage.setItem('user', JSON.stringify({type:'Employee'}))
+    document.body.innerHTML = BillsUI({data: bills})
+
+    const bill = new Bills({
+     document, onNavigate, store: null, bills, localStorage: window.localStorage
+    })
+
+    $.fn.modal = jest.fn()
+    const icon = screen.getAllByTestId('icon-eye')[0]
+    const clickOnIcon = jest.fn(bill.handleClickIconEye(icon))  
+
+    icon.addEventListener('click', clickOnIcon)
+    fireEvent.click(icon)
+
+    expect(clickOnIcon).toHaveBeenCalled()
+    expect(screen.getByText('Justificatif')).toBeTruthy()  
+   })
   })
 })
