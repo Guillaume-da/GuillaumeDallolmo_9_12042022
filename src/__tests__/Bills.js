@@ -4,12 +4,11 @@
 
 import {screen, waitFor, fireEvent} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
-import { bills } from "../fixtures/bills.js"
-import { ROUTES_PATH} from "../constants/routes.js"
+import {bills } from "../fixtures/bills.js"
+import {ROUTES_PATH} from "../constants/routes.js"
 import {localStorageMock} from "../__mocks__/localStorage.js"
 import Bills from "../containers/Bills.js"
 import mockStore from "../__mocks__/store"
-
 import router from "../app/Router.js"
 
 describe("Given I am connected as an employee", () => {
@@ -40,7 +39,7 @@ describe("Given I am connected as an employee", () => {
 })
 
 describe("When i click on new bill button", () => {
-  test("Then It should renders new bill page", async() => {
+  test("Then It should render new bill page", async() => {
     Object.defineProperty(window, 'localStorage', { value: localStorageMock })
     window.localStorage.setItem('user', JSON.stringify({
       type: 'Employee'
