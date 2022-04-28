@@ -5,14 +5,12 @@
 import {screen, waitFor, fireEvent} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
-import { ROUTES_PATH} from "../constants/routes.js";
-import {localStorageMock} from "../__mocks__/localStorage.js";
-import Bills from "../containers/Bills.js";
+import { ROUTES_PATH} from "../constants/routes.js"
+import {localStorageMock} from "../__mocks__/localStorage.js"
+import Bills from "../containers/Bills.js"
 import mockStore from "../__mocks__/store"
 
-// import userEvent from "@testing-library/user-event";
-
-import router from "../app/Router.js";
+import router from "../app/Router.js"
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -66,7 +64,6 @@ describe("When i click on new bill button", () => {
     expect(screen.getByText("Envoyer une note de frais")).toBeTruthy()
   })
 })
-
 
 // test d'intégration GET
 describe("Given I am a user connected as an Employee", () => {
