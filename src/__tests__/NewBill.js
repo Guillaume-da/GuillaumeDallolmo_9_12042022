@@ -21,14 +21,14 @@ describe("Given I am connected as an employee", () => {
 })
 
 describe("Given I am connected as an employee and a new bill form is submited", () => {
-  test('Then the handleSubmit function is called', () => {
-    const onNavigate = (pathname) => {
-      document.body.innerHTML = ROUTES({ pathname })
-    }
+  test('Then the handleSubmit function should be called', () => {
     Object.defineProperty(window, 'localStorage', { value: localStorageMock })
     window.localStorage.setItem('user', JSON.stringify({
       type: 'Employee'
     }))
+    const onNavigate = (pathname) => {
+      document.body.innerHTML = ROUTES({ pathname })
+    }
     const root = document.createElement("div")
     root.setAttribute("id", "root")
     document.body.append(root)
@@ -111,7 +111,8 @@ describe('Given I am connected as an employee, and I try to submit a new bill', 
     }))
 
     document.body.innerHTML = NewBillUI()
-
+    jest.spyOn(Store.api, 'post').mockImplementation(mockStore.post)
+    
     const newBill = new NewBill({ 
       document, onNavigate, store: mockStore, localStorage: window.localStorage 
     })
