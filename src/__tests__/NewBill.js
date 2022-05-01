@@ -51,50 +51,50 @@ describe("Given I am connected as an employee and a new bill form is submited", 
 
 describe("Given I am connected as an employee, and I try to submit a PDF file", () => {
   test("Then an alert message should be displayed", () => {
-      document.body.innerHTML = NewBillUI();
-      jest.spyOn(Store.api, 'post').mockImplementation(mockStore.post)
-      global.alert = jest.fn();
-      const newBill = new NewBill({
-          document, onNavigate, store: Store, localStorage: window.localStorage
-      })
+    document.body.innerHTML = NewBillUI();
+    jest.spyOn(Store.api, 'post').mockImplementation(mockStore.post)
+    global.alert = jest.fn();
+    const newBill = new NewBill({
+        document, onNavigate, store: Store, localStorage: window.localStorage
+    })
 
-      const input = screen.getByTestId("file")
-      const handleChangeFile = jest.fn(newBill.handleChangeFile)
+    const input = screen.getByTestId("file")
+    const handleChangeFile = jest.fn(newBill.handleChangeFile)
 
-      input.addEventListener("change", handleChangeFile)
-      fireEvent.change(input, {
-          target: {
-              files: [new File(["image"], "test.pdf", {type: "image/pdf"})]
-          }
-      })
+    input.addEventListener("change", handleChangeFile)
+    fireEvent.change(input, {
+        target: {
+            files: [new File(["image"], "test.pdf", {type: "image/pdf"})]
+        }
+    })
       
-      expect(handleChangeFile).toHaveBeenCalled()
-      expect(global.alert).toHaveBeenCalled()
+    expect(handleChangeFile).toHaveBeenCalled()
+    expect(global.alert).toHaveBeenCalled()
   });
 })
 
 describe("Given I am connected as an employee, and I try to submit a JPG file", () => {
   test("Then handleChangeFile function should be called", () => {
-      document.body.innerHTML = NewBillUI();
-      jest.spyOn(Store.api, 'post').mockImplementation(mockStore.post)
+    document.body.innerHTML = NewBillUI();
+    jest.spyOn(Store.api, 'post').mockImplementation(mockStore.post)
   
-      const newBill = new NewBill({
-          document, onNavigate, store: Store, localStorage: window.localStorage
-      });
+    const newBill = new NewBill({
+        document, onNavigate, store: Store, localStorage: window.localStorage
+    });
 
-      const input = screen.getByTestId("file");
-      const handleChangeFile = jest.fn(newBill.handleChangeFile)
+    const input = screen.getByTestId("file");
+    const handleChangeFile = jest.fn(newBill.handleChangeFile)
 
-      input.addEventListener("change", handleChangeFile)
+    input.addEventListener("change", handleChangeFile)
 
-      fireEvent.change(input, {
-          target: {
-              files: [new File(["image"], "test.jpg", {type: "image/jpg"})]
-          }
-      });
+    fireEvent.change(input, {
+        target: {
+            files: [new File(["image"], "test.jpg", {type: "image/jpg"})]
+        }
+    });
       
-      expect(handleChangeFile).toHaveBeenCalled()
-      expect(input.files[0].name).toBe('test.jpg')
+    expect(handleChangeFile).toHaveBeenCalled()
+    expect(input.files[0].name).toBe('test.jpg')
   });
 })
 
@@ -131,13 +131,13 @@ describe('Given I am connected as an employee, and I try to submit a new bill', 
     )
     
     const input = screen.getByTestId("file");
-      const handleChangeFile = jest.fn(newBill.handleChangeFile)
+    const handleChangeFile = jest.fn(newBill.handleChangeFile)
 
-      input.addEventListener("change", handleChangeFile)
+    input.addEventListener("change", handleChangeFile)
 
-      fireEvent.change(input, {
-          target: {
-              files: [new File(["image"], "test.jpg", {type: "image/jpg"})]
+    fireEvent.change(input, {
+        target: {
+            files: [new File(["image"], "test.jpg", {type: "image/jpg"})]
           }
       });
 

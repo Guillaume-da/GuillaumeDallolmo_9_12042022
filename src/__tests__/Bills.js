@@ -2,11 +2,11 @@
  * @jest-environment jsdom
  */
 
-import {screen, waitFor, fireEvent} from "@testing-library/dom"
+import { screen, waitFor, fireEvent } from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
-import {bills } from "../fixtures/bills.js"
-import {ROUTES_PATH} from "../constants/routes.js"
-import {localStorageMock} from "../__mocks__/localStorage.js"
+import { bills } from "../fixtures/bills.js"
+import { ROUTES_PATH } from "../constants/routes.js"
+import { localStorageMock } from "../__mocks__/localStorage.js"
 import Bills from "../containers/Bills.js"
 import mockStore from "../__mocks__/store"
 import router from "../app/Router.js"
@@ -92,7 +92,7 @@ describe("Given I am a user connected as an Employee", () => {
       expect(actions).toBeTruthy()
       expect(screen.getByTestId("btn-new-bill")).toBeTruthy()
     })
-    test('getBills function should be called', async () => {
+    test("getBills function should be called", async () => {
       const billsContainer = new Bills({ document, onNavigate, store: mockStore, localStorage: window.localStorage })
       jest.spyOn(billsContainer, 'getBills')
       await billsContainer.getBills()
