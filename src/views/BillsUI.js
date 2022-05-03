@@ -21,7 +21,6 @@ const row = (bill) => {
 
   const rows = (data) => {
     return (data && data.length) ? data
-    //sort date DESC mock
         .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1))
         .map(bill => row(bill)).join("") : ""
   }
