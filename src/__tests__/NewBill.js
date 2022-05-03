@@ -159,7 +159,7 @@ describe('Given I am connected as an employee, and I try to submit a new bill', 
       });
 
     form.addEventListener('submit', ((event) => newBill.handleSubmit(event)))
-    // userEvent.click(button)
+    userEvent.click(button)
 
     expect(billUpdated.id).toBe("47qAXb6fIm2zOKkLzMro")
     expect(screen.getByText('Mes notes de frais')).toBeTruthy()
