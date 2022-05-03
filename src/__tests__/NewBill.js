@@ -100,7 +100,7 @@ describe("Given I am connected as an employee, and I try to submit a JPG file", 
 
 // Test integration post
 describe('Given I am connected as an employee, and I try to submit a new bill', () => {
-  test('Then i should navigate to Bills Page', async () => {
+  test('Then i should navigate to Bills Page, and a new bill should have been created', async () => {
     const onNavigate = (pathname) => {
       document.body.innerHTML = ROUTES({ pathname });
     }
@@ -121,15 +121,32 @@ describe('Given I am connected as an employee, and I try to submit a new bill', 
     const button = form.querySelector('#btn-send-bill')
     const handleSubmit = jest.spyOn(newBill, 'handleSubmit')
 
-    userEvent.type(
-      getByTestId(document.body, 'expense-name'), 'post test',
-      getByTestId(document.body, 'datepicker'), '2002-02-02',
-      getByTestId(document.body, 'amount'), '200',
-      getByTestId(document.body, 'vat'), '20',
-      getByTestId(document.body, 'pct'), '20',
-      getByTestId(document.body, 'commentary'), 'test2'
-    )
+    const mockedBills = mockStore.bills()
+    const create = jest.spyOn(mockedBills, 'create')
+    const update = jest.spyOn(mockedBills, "update")
+
+    const mockedBillFirstStep = {
+      fileName: "test.jpg"
+    }
+
+    const mockedBill = {
+      "id": "47qAXb6fIm2zOKkLzMro",
+      "vat": "80",
+      "fileUrl": "https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
+      "status": "pending",
+      "type": "Hôtel et logement",
+      "commentary": "séminaire billed",
+      "name": "encore",
+      "fileName": "test.jpg",
+      "date": "2004-04-04",
+      "amount": 400,
+      "commentAdmin": "ok",
+      "email": "a@a",
+      "pct": 20
+    }
     
+    await create(mockedBillFirstStep)
+    const billUpdated = await update(mockedBill)
     const input = screen.getByTestId("file");
     const handleChangeFile = jest.fn(newBill.handleChangeFile)
 
@@ -142,8 +159,9 @@ describe('Given I am connected as an employee, and I try to submit a new bill', 
       });
 
     form.addEventListener('submit', ((event) => newBill.handleSubmit(event)))
-    userEvent.click(button)
+    // userEvent.click(button)
 
+    expect(billUpdated.id).toBe("47qAXb6fIm2zOKkLzMro")
     expect(screen.getByText('Mes notes de frais')).toBeTruthy()
     expect(handleSubmit).toHaveBeenCalled()
   })
