@@ -33,7 +33,7 @@ export default class {
       .bills()
       .list()
       .then(snapshot => {
-        const bills = snapshot
+        const bills = snapshot.sort((a, b) => (new Date(a.date) - new Date(b.date)))
           .map(doc => {
             try {
               return {
